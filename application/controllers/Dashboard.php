@@ -6,6 +6,7 @@ class Dashboard extends Web_Controller{
     function __construct(){
         parent::__construct();
         $this->load->model('user_model');
+        $this->load->model('marker_model');
         if(!$this->user_model->loggedIn()){
             $this->_toastFlash('Please Login first');
             redirect('login');
