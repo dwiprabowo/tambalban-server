@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration extends CLI_Controller{
+class Migrate extends CLI_Controller{
 
     function __construct(){
         parent::__construct();

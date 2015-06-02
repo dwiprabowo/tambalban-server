@@ -6,7 +6,7 @@ class CLI_Controller extends MY_Controller{
     function __construct(){
         parent::__construct();
         if(!$this->input->is_cli_request()){
-            return;
+            return show_404();
         }
     }
 }
