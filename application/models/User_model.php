@@ -19,10 +19,18 @@ class User_model extends MY_Model{
     function login($data){
         $result = false;
         $this->validate = $this->validate_login;
-        if($this->validate($data) AND $this->getLogin($data)){
-            $result = true;
+        if($this->validate($data)){
+            $user = $this->getLogin($data);
+            if($user){
+                $result = true;
+                $this->session->set_userdata('login', $user->id);
+            }
         }
         return $result;
+    }
+
+    function logout(){
+        $this->session->unset_userdata('login');
     }
 
     function getLogin($data){
@@ -30,5 +38,13 @@ class User_model extends MY_Model{
             'email' => $data['email'],
             'password' => md5($data['password']),
         ]);
+    }
+
+    function loggedIn(){
+        $loginInfo = $this->session->userdata('login');
+        if($loginInfo){
+            return true;
+        }
+        return false;
     }
 }

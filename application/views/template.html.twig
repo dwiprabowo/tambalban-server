@@ -39,7 +39,11 @@
         <script src="{{ base_url('assets/thirdparty/twbs-bootstrap/js/ie10-viewport-bug-workaround.js') }}"></script>
         <script>
         {% for item in toasts %}
-            toastr.{{ item.type }}('{{ item.message }}');
+            {% if item.type and item.message %}
+                setTimeout(function(){
+                    toastr.{{ item.type }}('{{ item.message }}');
+                }, {{ item.timeout }} );
+            {% endif %}
         {% endfor %}
         </script>
         {% block script %}{% endblock %}

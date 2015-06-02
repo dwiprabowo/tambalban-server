@@ -36,9 +36,17 @@ class Web_Controller extends MY_Controller{
 
     function _remap($object, $args){
         $requested_method = $object.'_'.$this->request->method;
+
+        $call_method = false;
         if(method_exists($this, $requested_method)){
+            $call_method = $requested_method;
+        }elseif(method_exists($this, $object)){
+            $call_method = $object;
+        }
+
+        if($call_method){
             call_user_func_array(
-                [$this, $requested_method]
+                [$this, $call_method]
                 , $args
             );
         }
@@ -50,6 +58,9 @@ class Web_Controller extends MY_Controller{
             '<label class="control-label">'
             , '</label>'
         );
+        if(defined('ENABLE_PROFILER') AND ENABLE_PROFILER){
+            $this->output->enable_profiler(true);
+        }
     }
 
     function _initTwig(){
@@ -99,12 +110,31 @@ class Web_Controller extends MY_Controller{
     }
 
     function _toast($message = false, $type = "error"){
+        return $this->_toastCore($message, $type);
+    }
+
+    function _toastFlash($message = false, $type = "error"){
+        return $this->_toastCore($message, $type, false);
+    }
+
+    function _toastCore($message = false, $type = "error", $direct = true){
         if(!$message){
             return $this->toasts;
         }
-        $this->toasts[] = [
+        $toast = [
             'type' => $type,
             'message' => $message,
         ];
+        if($direct){
+            $this->toasts[] = $toast;
+        }else{
+            $toasts = [];
+            if($this->session->flashdata('toast')){
+                $toasts = $this->session->flashdata('toast');
+            }
+            $toasts[] = $toast;
+            $this->session->set_flashdata('toast', $toasts);
+        }
+        return false;
     }
 }
