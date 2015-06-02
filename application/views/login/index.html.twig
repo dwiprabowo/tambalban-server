@@ -48,50 +48,52 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
+    <div class="container">
+        <form method="post" class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
 
-        {% if form_error('email') %}
-            <div class="form-group has-error">
-        {% endif %}
-            <label for="inputEmail" class="sr-only">Email address</label>
-            <input 
-                type="text" 
-                name="email" 
-                id="inputEmail" 
-                class="form-control" 
-                placeholder="Email address" 
-                value="{{ set_value('email') }}" 
-                autofocus
-            >
-        {% if form_error('email') %}
-            {{ form_error('email')|raw }}
+            {% if form_error('email') %}
+                <div class="form-group has-error">
+            {% endif %}
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input 
+                    type="text" 
+                    name="email" 
+                    id="inputEmail" 
+                    class="form-control" 
+                    placeholder="Email address" 
+                    value="{{ set_value('email') }}" 
+                    autofocus
+                >
+            {% if form_error('email') %}
+                {{ form_error('email')|raw }}
+                </div>
+            {% endif %}
+
+            {% if form_error('password') %}
+                <div class="form-group has-error">
+            {% endif %}
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="inputPassword" 
+                    class="form-control" 
+                    value="{{ set_value('password') }}" 
+                    placeholder="Password" 
+                >
+            {% if form_error('password') %}
+                {{ form_error('password')|raw }}
+                </div>
+            {% endif %}
+
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
             </div>
-        {% endif %}
 
-        {% if form_error('password') %}
-            <div class="form-group has-error">
-        {% endif %}
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input 
-                type="password" 
-                name="password" 
-                id="inputPassword" 
-                class="form-control" 
-                value="{{ set_value('password') }}" 
-                placeholder="Password" 
-            >
-        {% if form_error('password') %}
-            {{ form_error('password')|raw }}
-            </div>
-        {% endif %}
-
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+    </div>
 {% endblock %}

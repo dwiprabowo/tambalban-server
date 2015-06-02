@@ -81,6 +81,7 @@ class Web_Controller extends MY_Controller{
     function _twigFilter(){
         return [
             'base_url',
+            'site_url',
             'set_value',
             'form_error'
         ];

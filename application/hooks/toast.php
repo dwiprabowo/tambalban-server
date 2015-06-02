@@ -5,6 +5,9 @@ class Toast{
 
     function collect(){
         $CI =& get_instance();
+        if(!is_subclass_of($CI, 'Web_Controller')){
+            return;
+        }
         $toasts = $CI->_toast();
         if($CI->session->flashdata('toast')){
             $toasts = array_merge(
