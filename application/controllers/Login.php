@@ -10,5 +10,8 @@ class Login extends Web_Controller{
 
     function index_post(){
         $loggedIn = $this->user_model->login($this->input->post());
+        if(!$loggedIn){
+            $this->_toast('Login is not valid');
+        }
     }
 }

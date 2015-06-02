@@ -13,6 +13,8 @@ class Web_Controller extends MY_Controller{
     private $var = [];
     private $request;
 
+    private $toasts = [];
+
     function __construct(){
         parent::__construct();
         $this->_request();
@@ -83,15 +85,26 @@ class Web_Controller extends MY_Controller{
         }
     }
 
-    function _var($key = false){
+    function _var($key = false, $value = false){
         if(!$key){
             return $this->var;
         }
+        $this->var[$key] = $value;
     }
 
     function _viewPath(){
         return $this->router->fetch_class()
             .DS
             .$this->router->fetch_method();
+    }
+
+    function _toast($message = false, $type = "error"){
+        if(!$message){
+            return $this->toasts;
+        }
+        $this->toasts[] = [
+            'type' => $type,
+            'message' => $message,
+        ];
     }
 }
