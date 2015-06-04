@@ -75,14 +75,14 @@
     $(".decide-btn").on('click', function(){
         var markerId = $("#marker-preview-id").html();
         if(!markerId){
-            alert("Unable to process request!");
+            toastr.warning("Unable to process request!");
             return;
         }
         $("#marker-decide input[name=id]").val(markerId);
         var actionUrl = '{{ site_url('dashboard') }}';
         if($(this).data('value') == 1){
             actionUrl += "/approve";
-        }else if($(this).data('value') == 1){
+        }else if($(this).data('value') == 2){
             actionUrl += "/reject";
         }
         $("#marker-decide").prop("action", actionUrl);
