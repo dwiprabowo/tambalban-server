@@ -1,0 +1,56 @@
+<div class="col-md-6">
+    <div class="well well-lg">
+        <table id="marker-preview" class="table table-hover">
+            <tr>
+                <td style="width: 30%;">
+                    <label>ID</label>
+                </td>
+                <td style="width: 10%;" class="separator-colon">:</td>
+                <td 
+                    style="width: 60%;" 
+                    id="marker-preview-id"
+                    class="text-right" 
+                ></td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Latitude</label>
+                </td>
+                <td class="separator-colon">:</td>
+                <td class="text-right" id="marker-preview-latitude"></td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Longitude</label>
+                </td>
+                <td class="separator-colon">:</td>
+                <td class="text-right" id="marker-preview-longitude"></td>
+            </tr>
+        </table>
+        <div id="map-wrapper">
+            <div id="map-canvas"></div>
+        </div>
+        <div class="text-center" style="margin-top: 9px;">
+            <button 
+                class="btn btn-lg btn-primary decide-btn"
+                data-value="1"
+            >
+                Approve
+            </button>
+            <button 
+                class="btn btn-lg btn-danger decide-btn"
+                data-value="2"
+            >
+                Reject
+            </button>
+        </div>
+        <div style="display: none;">
+            <form 
+                id="marker-decide" 
+                method="post" 
+            >
+                <input type="text" name="id">
+            </form>
+        </div>
+    </div>
+</div>

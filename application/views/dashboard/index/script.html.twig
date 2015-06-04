@@ -1,0 +1,91 @@
+<script 
+    type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiD-DHHaJ9cBkVBqmDTVk0-tKcKvxjuzU">
+</script>
+<script type="text/javascript">
+    var map, marker;
+    function initialize() {
+        var myOptions = {
+            zoom: 15,
+            center: {lat: 0, lng: 0},
+        }
+        map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
+        var marker = new google.maps.Marker({
+            position: {lat: 0, lng: 0},
+            map: map,
+            title: 'Position'
+        });
+        marker.setMap(map);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+<script>
+    $(document).ready(function() {
+        $('#table').dataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": '{{ base_url('api/markers?datatables=true') }}',
+            "columns": [
+                { "data": "no" },
+                { "data": "id" },
+                { "data": "lat" },
+                { "data": "lng" },
+            ],
+            "columnDefs": [
+                { "targets": [0], "sortable": false },
+            ],
+            "filter": false,
+            "fnInitComplete": function(oSettings, json) {
+                $('#table tbody tr:first').click();
+            },
+        });
+        $('#table tbody').on('click', 'tr', function(){
+            var row = this;
+            $('#table tbody tr').each(function(){
+                if($(this).hasClass('info')){
+                    $(this).removeClass('info');
+                }
+            });
+            var el = $(row);
+            el.addClass('info');
+            var id = $('td', this).eq(1).text();
+            var lat = $('td', this).eq(2).text();
+            var lng = $('td', this).eq(3).text();
+            $("#marker-preview-id").html(id);
+            $("#marker-preview-latitude").html(lat);
+            $("#marker-preview-longitude").html(lng);
+            updateMap({lat: parseFloat(lat), lng: parseFloat(lng)});
+        });
+
+        function updateMap(data){
+            map.setCenter(data);
+            if(typeof marker === 'undefined'){
+                marker = new google.maps.Marker({
+                    position: data,
+                    title: 'Position'
+                });
+                marker.setMap(map);
+            }else{
+                marker.setPosition(data);
+            }
+        }
+    });
+</script>
+<script>
+    $(".decide-btn").on('click', function(){
+        var markerId = $("#marker-preview-id").html();
+        if(!markerId){
+            alert("Unable to process request!");
+            return;
+        }
+        $("#marker-decide input[name=id]").val(markerId);
+        var actionUrl = '{{ site_url('dashboard') }}';
+        if($(this).data('value') == 1){
+            actionUrl += "/approve";
+        }else if($(this).data('value') == 1){
+            actionUrl += "/reject";
+        }
+        $("#marker-decide").prop("action", actionUrl);
+        $("#marker-decide").submit();
+    });
+</script>

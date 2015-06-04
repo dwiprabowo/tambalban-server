@@ -8,6 +8,16 @@ class Api extends REST_Controller{
         $this->load->model('marker_model');
     }
 
+    function markers_post(){
+        if(!($result = $this->marker_model->insert($this->input->post()))){
+            $result = [
+                'error' => true,
+                'message' => validation_errors(),
+            ];
+        }
+        $this->response($result, 200);
+    }
+
     function markers_get(){
         $limit = $this->input->get('length');
         $offset = $this->input->get('start');
@@ -34,13 +44,18 @@ class Api extends REST_Controller{
             $order = $this->input->get('order')[0];
         }
 
+        $review = 0;
+        if(!$this->input->get('datatables')){
+            $review = 1;
+        }
+
         $markers = $this->marker_model
             ->limit($limit, $offset)
             ->order_by(
                 $field_data[$order['column']]
                 , $order['dir']
             )
-            ->get_all();
+            ->get_many_by('review', $review);
 
         if($markers){
             $count = 0;
@@ -48,16 +63,22 @@ class Api extends REST_Controller{
                 $v->no = ++$count;
             }
             $result = $markers;
-            $status = 200;
+        }else{
+            $result = [];
         }
+        $status = 200;
 
         if($this->input->get('datatables')){
-            $records_count =$this->marker_model->count_all();
+            $records_count =$this->marker_model->count_by('review', $review);
             $result = [ 
                 "recordsFiltered" => $records_count,
                 "recordsTotal" => $records_count,
                 "draw" => $this->input->get('draw'),
                 'data' => $result 
+            ];
+        }else{
+            $result = [
+                'markers' => $result
             ];
         }
         $this->response($result, $status);

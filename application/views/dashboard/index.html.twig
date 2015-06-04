@@ -108,6 +108,33 @@
             display: inline-block;
             border-radius: 50%;
         }
+
+        table tr td.separator-colon{
+            text-align: center;
+        }
+
+        #table-wrapper{
+            overflow-x: auto;
+        }
+
+        #table{
+            width: 100%;
+        }
+
+        #marker-preview{
+            width: 100%;
+        }
+
+        #map-canvas { 
+            width: 100%;
+            height: 240px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .well{
+            background: rgba(0, 0, 0, .01);
+        }
     </style>
 {% endblock %}
 
@@ -162,71 +189,14 @@
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1 class="page-header">Dashboard</h1>
                 <div class="row">
-                    <div class="col-md-7">
-                        <table 
-                            id="table"
-                            class="table-hover" 
-                        >
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>ID</th>
-                                    <th>Latitude</th>
-                                    <th>longitude</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="row placeholders">
-                            <div class="col-md-6 col-sm-3 placeholder">
-                                <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-                                <h4>Label</h4>
-                                <span class="text-muted">Something else</span>
-                            </div>
-                            <div class="col-md-6 col-sm-3 placeholder">
-                                <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-                                <h4>Label</h4>
-                                <span class="text-muted">Something else</span>
-                            </div>
-                            <div class="col-md-6 col-sm-3 placeholder">
-                                <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-                                <h4>Label</h4>
-                                <span class="text-muted">Something else</span>
-                            </div>
-                            <div class="col-md-6 col-sm-3 placeholder">
-                                <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-                                <h4>Label</h4>
-                                <span class="text-muted">Something else</span>
-                            </div>
-                        </div>
-                    </div>
+                    {% include 'dashboard/index/table.html.twig' %}
+                    {% include 'dashboard/index/detail-data.html.twig' %}
                 </div>
-
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block script %}
-    <script>
-        $(document).ready(function() {
-            $('#table').dataTable( {
-                "processing": true,
-                "serverSide": true,
-                "ajax": '{{ base_url('api/markers?datatables=true') }}',
-                "columns": [
-                    { "data": "no" },
-                    { "data": "id" },
-                    { "data": "lat" },
-                    { "data": "lng" },
-                ],
-                "columnDefs": [{ "targets": [0], "sortable": false }],
-                "filter": false,
-            } );
-            $('#table tbody').on('click', 'tr', function () {
-                var name = $('td', this).eq(0).text();
-            } );
-        } );
-    </script>
+    {% include 'dashboard/index/script.html.twig' %}
 {% endblock %}

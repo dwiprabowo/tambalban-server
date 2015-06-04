@@ -16,6 +16,12 @@ class Migration_Add_markers extends CI_Migration{
                 'type' => 'VARCHAR',
                 'constraint' => 100,
             ],
+            'review' => [
+                'type' => 'INT',
+                'constraint' => 1,
+                'unsigned' => true,
+                'default' => 0,
+            ],
         ]);
         $this->dbforge->create_table($this->tablename);
     }

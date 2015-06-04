@@ -12,4 +12,24 @@ class Dashboard extends Web_Controller{
             redirect('login');
         }
     }
+
+    function approve_post(){
+        $this->marker_model->update(
+            $this->input->post('id')
+            , ['review' => 1]
+            , true
+        );
+        $this->_toastFlash("Marker Accepted!", "success");
+        redirect("dashboard");
+    }
+
+    function reject_post(){
+        $this->marker_model->update(
+            $this->input->post('id')
+            , ['review' => 2]
+            , true
+        );
+        $this->_toastFlash("Marker Rejected!");
+        redirect("dashboard");
+    }
 }
